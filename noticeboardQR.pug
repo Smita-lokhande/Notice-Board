@@ -1,0 +1,131 @@
+doctype html
+html(lang="en")
+    head
+        title Calendaree || Notice Board
+        //-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        link(href='/static/css/style.css' rel='stylesheet' type='text/css')
+        link(href='/static/css/noticeboard.css' rel='stylesheet' type='text/css')
+        //- onload='noticeboardshow();retriveorgname();'
+body(onload='noticeboardshow();retriveorgname();') 
+    div.container(style="width:100%") 
+        div.content
+            div.header
+                div.logo
+                     div.logo
+                        table.tblflex(align="center") 
+                            tr 
+                                td(width="50%" style="text-align:left")
+                                    img(src="/static/image/Calendaree-logo-Original.png")
+                                td(align="center" style="text-align:left; vertical-align: middle;")
+                                    div(id="loguploadn"  style="width:160%; !important; margin-left:-50px;") 
+                                td(style=' font-size: 20px;')  Notice List
+                        table(align="center")
+                            tr.tblflex(align="center")       
+                                td
+                                    table(align="center" width="100%" id='orginfo1')  
+                                        tr(align="center") 
+                                            td.tblflex(style="margin:0px; padding:0px; ")
+                                                p#orgdetails       
+                                    table(align="center" id='orginfo2')
+                                        tr.tblflex 
+                                            td
+                                                label Date 
+                                                br
+                                                input(type="date" id="shownoticedata1")
+                                            td
+                                                br
+                                                button(onclick="shownb();" style='margin-top: 15px ;') Notice Board      
+                                            td 
+                                                input(id='noticeid1' type="hiddenbox2" style='display: none;')
+                                            td 
+                                                input(id='orginfo' type="hiddenbox3" style='display: none;')  
+                        div.model12#searchnotice 
+                            table(align='center') 
+                                tr(align='center')  
+                                    td(align='center')  
+                                        input(type="text" id='searchnoticetext')
+                                    td    
+                                        button(onclick='searchnotices();') Search 
+                                
+                                tr(align='center')
+                                    table(align='center')
+                                        tr(align='center') 
+                                            td(align='center') 
+                                                div#showsearchnotice        
+
+                        div.model12#enquiry
+                            table(align="center") 
+                                tr
+                                    td.tblflex
+                                        dialog#enquirydialog(style="border-radius: 15px; width: 550px; height: 400px;" class="digclass")
+                                            table 
+                                                tr 
+                                                    td(class='tblbackcolor')
+                                                        table(align="center") 
+                                                            tr(align="center")   
+                                                                td(class="fr1" style="vertical-align: top;")
+                                                                td.tblclass(align="center" style="vertical-align: top;")     
+                                                                    button(onclick="closeenquiryd();"  class="closebutt" align="center") X
+                                                                td 
+                                                                    input(id='organizationid' type="hiddenbox1" style='display: none;') 
+                                                                td 
+                                                                    input(id='noticeid2' type="hiddenbox4" style='display: none;')        
+                                                                    
+                                                            tr 
+                                                                table(align="center") 
+                                                                    tr(align="center") 
+                                                                        td
+                                                                            label Name
+                                                                            input(type='text' id='ename' placeholder='Name' maxlength='40' size='60' required)
+                                                                        td
+                                                                            label Contact No
+                                                                            input(type='text' id='econtactno' placeholder='Contact no' maxlength='10' size='60' required)
+                                                                    tr(align="center")
+                                                                        table(align="center") 
+                                                                            tr(align="center")
+                                                                                td(align="center") 
+                                                                                    label Text
+                                                                                    br 
+                                                                                    textarea(id="enqtext" placeholder="logtext" style="width: 300px; height: 170px;")
+                                                                                    br
+                                                                                    button(onclick="enquiryseve();" class="savebutt") Save    
+                                                        div#dialogboxclosefile
+                        div.model12#noticeinformation
+                            table(align="center") 
+                                    tr 
+                                        td.tblflex
+                                            <dialog id="allnoticeinfo" class="digclass" style='width: 800px; height: 400px; overflow: auto;'>
+                                                table(align="center") 
+                                                    tr(align="center")     
+                                                        td.tblclass(align="center" style="vertical-align: top;")     
+                                                            button(onclick="closeinfodialog();"  class="closebutt") X
+                                                    tr
+                                                        td(id='shownoticei')
+                                                        //-  div#shownoticei
+                                                        
+                                    
+                                                div#dialogboxclosefile
+                                            <dialog>                    
+                        table(align="center" width="100%" )
+                            tr.tblflex 
+                                td(align="center")               
+                                    table(align="center" ) 
+                                        tr.tblflex(align="center" style="display:flex; flex-flow:row wrap;")
+                                            td.tblflex(align="center" id='shownoticeboard1'  style='width: 100%; height: 100%;')
+                                        tr    
+                        //- table(align="center" width="100%")
+                        //-     tr 
+                        //-         td(align='center' style="width:0px; height:300px;!important;")
+                                    //- div#shownoticeboard1(align="center" style='width: 70%; height: 500px; align-items: left;')
+                        div(width="100%").loader#divusermsg
+                            table(width="100%" align='center' style="margin:0px; padding:0px;") 
+                                tr(width="100%" align='center' style="margin:0px; padding:0px;") 
+                                    td(align='center' style="width:100%; !important;")
+                                        div(width="100%" id="usermsg12" style="color:rgb(29, 104, 125)")
+                        
+                                                                                  
+block script                                   
+    script(async defer type='text/javascript' src='/static/js/noticeboardQR.js')
+    script(async defer type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js")
+    script(async defer type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+    

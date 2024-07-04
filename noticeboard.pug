@@ -1,0 +1,591 @@
+doctype html
+html(lang="en")
+  head
+    title Calendaree || Notice Board
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(href='/static/css/noticeboard.css' rel='stylesheet' type='text/css')
+    link(href='/static/css/style.css' rel='stylesheet' type='text/css')
+    link(href=`/static/css/${orgcolor}.css` rel='stylesheet' type='text/css')   
+    link(href='/static/image/calen2.jpg' rel='stylesheet' type='text/image')
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="images/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="images/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="icon" type="images/png" sizes="192x192" href="/images/favicon-192x192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    body(onload="getlogonoticeb();")
+        div.container
+            div.content
+                div.header
+                    div.logo
+                        table.tblflex(align="center") 
+                            tr(align="center")  
+                                td(width="50%" style="text-align:left")
+                                    img(src="/static/image/Calendaree-logo-Original.png")
+                                td(align="center" style="text-align:left; vertical-align: middle;")
+                                    div(id="loguploadn"  style="width:160%; !important; margin-left:-50px;") 
+                                td
+                                    <b>#{username}</b><br>
+                                    <a href="/1/menu" class="loginlink">Main</a>&nbsp;&nbsp;
+                                    <a href="/1/login" class="loginlink">Logout</a>
+                                    br
+                                    button.metal.linear(onclick='sendmessage1()') Support On  <i class="fa fa-whatsapp" style="font-size:24px;">
+                        div(align="center").loader#divusermsg 
+                            table(width="100%" align='center' style="margin:0px; padding:0px;") 
+                                tr(width="100%" align='center' style="margin:0px; padding:0px;") 
+                                    td(align='center' style="width:100%; !important;")
+                                        div(width="100%" id="usermsg12" style="color:rgb(93, 194, 222)")
+                        div.loader#loader
+                                table(align='center') 
+                                    tr(align='center') 
+                                        td(align='center')
+                                            | Update.....     
+                        
+                        div.loader#loader2
+                            table(align='center') 
+                                tr(align='center') 
+                                    td(align='center')
+                                        | Saving.....              
+                        div.loader#loader3
+                            table(align='center') 
+                                tr(align='center') 
+                                    td(align='center')
+                                        | Delete.....  
+                        
+                        div#noticeboard 
+                            table(align="center")    
+                                if(admin==0 && started==0 && User==0 )
+                                    tr 
+                                        td 
+                                            button(onclick ="subscribe();") Get Subscribe   
+                        div#orgnibtn
+                            table(align="center")
+                                tr 
+                                    td 
+                                        if(admin==1 && started==0 && substatus==0)
+                                            button(onclick="orginfo();")  Orgnization Information
+                        div#mainmenu
+                            table.tblflex
+                                tr
+                                    td
+                                        table
+                                            tr
+                                                td
+                                                    if ((admin == 1 && started == 1 && substatus == 1 ) || (admin == 0 && started == 0 && User == 1 && substatus == 1 ))
+                                                        img(onclick='noticeboard();' src='/static/image/noticeboard.png' style='width:120px; height: 80px;') 
+                                                        br
+                                                        p(onclick='noticeboard();') Notice Board
+                                                td
+                                                    if (admin == 1 && started == 1 && substatus == 1)
+                                                        img(onclick='memberinfo();' src='/static/image/staffmanagement.png' style='width:70px;')
+                                                        br
+                                                        p(onclick='memberinfo();') Manage Member
+                                            tr
+                                                td
+                                                    if ((admin == 1 && started == 1 && substatus == 1) || (admin == 0 && started == 0 && User == 1 && substatus == 1))
+                                                        img(onclick='showQRcode();' src='/static/image/qrcode.png' style='width:70px;')
+                                                        br
+                                                        p(onclick='showQRcode();') Show QRCode
+                                                td
+                                                    if (admin == 1 && started == 1 && substatus == 1 )
+                                                        img(onclick='updateorginfo();' src='/static/image/updateorganization.jpeg' style='width:70px;')
+                                                        br
+                                                        p(onclick='updateorginfo();') Update Organization Info
+                                            tr
+                                                td
+                                                    if (admin == 1 && started == 1 && substatus == 1)
+                                                        img(onclick='acountstatus();' src='/static/image/Account status.jpeg' style='width:70px;')
+                                                        br
+                                                        p(onclick='acountstatus();') Account Status
+                                if (User === 1 && substatus == 0)
+                                    tr
+                                        td
+                                            h1 You have reached the end of your subscription for the Notice Board Module
+                                    tr
+                                        td
+                                            h1 Contact Your Respective Organization
+                                if (admin === 1 && substatus == 0 && started == 1)
+                                    tr
+                                        td
+                                            h1 You have reached the end of your subscription for the Notice Board Module
+                                    tr
+                                        td
+                                            button.metal.linear(onclick='sendmessage2()') Sales On
+                                                i.fa.fa-whatsapp(style='font-size:24px;')
+                                    
+                        div.model12#org
+                            table 
+                                tr.tblflex 
+                                    table(align="center" class='tblbackcolor')
+                                                tr  
+                                                    td
+                                                        h1 Organization Information 
+                                                    //- td
+                                                    //-     button(onclick="cancelorgdb();" style="background-color:#E74C3C; text-align: justify;") X 
+
+                                                tr
+                                                    td
+                                                        label Organization Name
+                                                        input(type='text' id='orgname' placeholder='Organization Name' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") Address 
+                                                        input(type='text' id='orgaddress' placeholder='Address' maxlength='40' size='40' required)        
+                                                tr
+                                                    td
+                                                        label(for="") Address
+                                                        input(type='text' id='orgaddress2' placeholder='Address' maxlength='40' size='40' required)        
+                                                tr
+                                                    td
+                                                        label(for="") City
+                                                        input(type='text' id='orgcity' placeholder='City' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") State
+                                                        input(type='text' id='orgstate' placeholder='State' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") Email
+                                                        input(type='email' id='orgemail' placeholder='Email' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") Mobile
+                                                        input(type='text' id='phoneno' placeholder='Mobile' maxlength='10' size='40' required)
+                                    br
+                                    table(align="center")
+                                        tr.tblflex(align="center")
+                                            td 
+                                                button(onclick='saveorginfo();' width='95px') Save Organazation
+                                            td  
+                                                button(onclick="cancelorgdb();" ) X    
+                                        tr 
+                                            td             
+                        
+                        div.model12#staffaddinfo
+                            table(align="center" cellspacing="0" cellpadding="0"   style="vertical-align: top;"  ) 
+                                    tr.tblflex(align="center") 
+                                        td(align="center" class="tblbackcolor" id='tblbackcolor1')
+                                            table(align="center")
+                                                tr(align="center")    
+                                                    td(align="center" class="ms")
+                                                        h1 Manage Staff  
+                                                    td(class="aligreight")     
+                                                        button(onclick="closemanegestaff();"  class="closemanegestaff" ) X    
+                                            table.tblclass(align="center")
+                                                tr.tblflex(align="center") 
+                                                    td.tblclass(align="center")
+                                                        //- label.user( id="datelable" ) Mobile Number
+                                                        //- br
+                                                        input(type="text" id="staffmobilenumber" placeholder="mobile number" style="width:150px;" maxsize="15" hight="5")
+                                                    td 
+                                                        button(onclick="searchstaff();") Search 
+                                            
+                                            table           
+                                                tr.tblflex
+                                                    td.tblclass(style='margin: 2px; padding: 2px;')
+                                                        label(for="user" ) Name
+                                                        br   
+                                                        input(type="text" id="staffname" placeholder="username" maxsize="10" hight="5" style="width:100%;") 
+                                                        //- table.tblclass             
+                                                        //-     tr.tblclass 
+                                                    td.tblclass(style='margin: 2px; padding: 2px;')
+                                                        label Email
+                                                        br    
+                                                        input(type="text" id="staffmail" placeholder="email" maxsize="10" hight="5" style="width:100% ;")                  
+                                                            //- table.tblclass(align="center") 
+                                                            //-     tr.tblclass(align="center") 
+                                                    td.tblclass(style='margin: 2px; padding: 2px;')
+                                                        label Position
+                                                        br
+                                                        select( type="text"  id="addposition" placeholder='Position' required style="width:100%;")
+                                                            option(value="select") Select Position
+                                                            option(value="User") User 
+                                                    td        
+                                            br
+                                            table(align="center")     
+                                                tr(align="center") 
+                                                    td(align="center")
+                                                        button(onclick="assignstaff();" style="text-align: justify;") Save
+                                    tr(align="center")
+                                        table(align="center")
+                                            tr(align="center")
+                                                td 
+                                                    h4 Staff Report
+                                            tr(align="center")
+                                                td(align="center")             
+                                                    div#staffreport                 
+                        div.model12#acountstatusinfo
+                            table(align="center" width="50%")
+                                tr.tblflex 
+                                        table(align="center")
+                                            tr(align="center") 
+                                                td(align="center") 
+                                                    h1 Account Status
+                                                td 
+                                                    button(onclick="cancelaccountstatuspagen();") X
+                                        table(align="center"  class="tblbackcolor")
+                                            tr(align="center")
+                                                td(align="center")
+                                                        br
+                                                        table(align="center")
+                                                            tr(align="center")
+                                                                td.tblclass 
+                                                                    label(for="") Account state
+                                                                    input(type='text' maxtlength='10' size='10' id='state' disabled='disabled')
+                                                                td.tblclass 
+                                                                    label(for="") Day's left
+                                                                    input(type='text' maxlength='10' size='10' id='valid' disabled='disabled')
+                                                        table 
+                                                            tr.tblclass
+                                                                td.tblclass 
+                                                                    label(for="" ) Start Date 
+                                                                    input(type='text' maxtlength='10' size='10' id='stdate' disabled='disabled') 
+                                                                td.tblclass 
+                                                                    label(for="" ) End Date 
+                                                                    input(type='text' maxtlength='10' size='10' id='eddate' disabled='disabled')
+                                                            tr.tblclass    
+                                                                td.tblclass 
+                                                                    label(for="" ) Quota
+                                                                    input(type='text' maxtlength='10' size='10' id='quota' disabled='disabled')     
+                                                                td.tblclass 
+                                                                    label(for="" ) Used Quota
+                                                                    input(type='text' maxtlength='10' size='10' id='usedquota' disabled='disabled')         
+                        div.model12#updateorgnization
+                            table 
+                                tr.tblflex 
+                                    table(width="30%" cellspacing="0" cellpadding="0" align ='center')
+                                        tr(align="center")  
+                                            td(align="center") 
+                                                h1 Update Organization
+                                        tr(align="center" )         
+                                            table(align="center" cellspacing="0" cellpadding="0" class='tblbackcolor')
+                                                tr
+                                                    td
+                                                        label Organization Name
+                                                        input(type='text' id='orgname1' placeholder='Organization Name' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") Address 
+                                                        input(type='text' id='uaddress' placeholder='Address' maxlength='40' size='40' required)        
+                                                tr
+                                                    td
+                                                        label(for="") Address 2
+                                                        input(type='text' id='uaddress2' placeholder='Address' maxlength='40' size='40' required)        
+                                                tr
+                                                    td
+                                                        label(for="") City
+                                                        input(type='text' id='ucity' placeholder='City' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") State
+                                                        input(type='text' id='ustate' placeholder='State' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") Email
+                                                        input(type='text' id='uemail' placeholder='Email' maxlength='40' size='40' required)
+                                                tr
+                                                    td
+                                                        label(for="") Mobile
+                                                        input(type='text' id='phoneno1' placeholder='Mobile' maxlength='10' size='10' required)
+                                            br
+                                            table(align="center")    
+                                                tr(align="center" )
+                                                    td(align="center" ) 
+                                                        button(onclick='updateorg()' width='95px') Save Organization
+                                                    td(align="center" )  
+                                                        button(onclick="cancelbutton1();"  ) X          
+
+                                            table(align="center" class='tblbackcolor') 
+                                                tr(align="center" ).tblflex
+                                                    td(align="center" )
+                                                        select(type="text" id="csscolor" required style="width:150px;")   
+                                                    td(align="center")
+                                                        button(onclick="orgcolornoticeboard();" ) Add Color         
+                                            
+                                                tr(align="center" ).tblflex
+                                                    td(colspan="2" align="center" )
+                                                        input(type="file" id="uploadlogon" placeholder="choose file")   
+                                                    td(align="center" )
+                                                        button(onclick="noticeblogo();") Logo upload
+                                                tr 
+                                                    td      
+                                                  
+                        div.model12#showQRCode
+                            table 
+                                tr.tblflex
+                                    table(width="100%" cellspacing="0" cellpadding="0" align ='center')
+                                        tr(align="center")  
+                                            td(align="center") 
+                                                h1 QRCode
+                                        tr(align="center")    
+                                            table(align="center" cellspacing="0" cellpadding="0")
+                                                tr.tblflex 
+                                                    td(align="center" style='vertical-align: top;') 
+                                                        select(id="retrivnoticeboardvalues"  style='width: 200px;')  
+                                                    td(align="center" style="vertical-align: top;") 
+                                                        button(onclick="displayqrcode();") Display QRCode 
+                                                    td 
+                                                        input(type="hidden" id="noticeboard_id")             
+                                                tr.tblflex(align="center") 
+                                                    br
+                                                    br
+                                                    table(align="center" width='100%' id='dqrcode')
+                                                        tr.tblflex(align="center")
+                                                            td(align='center' width='70%') 
+                                                                div#showcallogo
+                                                        br
+                                                        tr(align='center' width='100%')    
+                                                            td(align='center') 
+                                                                div#noticename1(style='font-size: 22px; font-weight: bold;') 
+                                                        tr(align='center')    
+                                                            td(align="center" width='100%')  
+                                                                div#noticeqrcode(align="center" width='150%')   
+                                                tr.tblflex(align='center')  
+                                                    table(align="center")
+                                                        tr(align="center") 
+                                                            td(align="center") 
+                                                                button(onclick='downloadqrcode();' ) Download QRCode 
+                                                            td(align="center") 
+                                                                button(onclick='closeQRCodepage();') X 
+                                                        tr 
+                                                            td                                                                                                                      
+                        div.model12#noticeboardpage
+                            table(width="100%" align="center")
+                                tr(align="center") 
+                                    td(align="center") 
+                                        table
+                                            tr(align="center")
+                                                    table(align="center") 
+                                                        tr.tblflex(align="center")  
+                                                            td(align="center") 
+                                                                select(id="shownoticeboards"  required style="width: 230px; height: 33px;") 
+                                                            td.tblclass
+                                                                //- label.user( id="datelable") Date 
+                                                                //- br
+                                                                input(type="date" id="shownoticedata"  required style="width:140px;")
+                                                            td(align="center") 
+                                                                button(onclick="noticeboardshow();") Show Notice Board 
+                                                            td(align="center") 
+                                                                if(admin==1 && started==1)
+                                                                    button( onclick="newnoticeboard();" ) New NoticeBoard   
+                                                            td(align="center") 
+                                                                if(admin==1 && started==1)
+                                                                    button(onclick="newnoticecreate();") New Notice 
+                                                            td(align="center")
+                                                                button(onclick="showenquirytable();") Enquiry         
+                                                            td(align="center") 
+                                                                button(onclick="closenoticeboardpage();") X  
+                                                            td 
+                                                                input(id='noticeid1' type="hiddenbox2" style='display: none;')            
+                                                    div.model12#newnoticeboardc
+                                                        table(align="center") 
+                                                                tr.tblflex 
+                                                                    td
+                                                                        <dialog id="noticebosrdialog" class="digclass" style="border-radius: 15px; width: 310px; height: 430px;">
+                                                                            table 
+                                                                                tr 
+                                                                                    td(class='tblbackcolor')
+                                                                                        table(align="center")
+                                                                                            tr(align="center")  
+                                                                                                td(style="text-align:right;" align="center")  
+                                                                                                    h1(style="text-align:center;" align="center") Notice Board 
+                                                                                                td(class="aligreight")     
+                                                                                                    button(onclick="closenewnoticeboard();"  ) X
+                                                                                            
+                                                                                        table.tblclass(align="center") 
+                                                                                            tr.tblclass  
+                                                                                                td.tblclass(align="center")
+                                                                                                    label Notice Board Title 
+                                                                                                    br  
+                                                                                                    input(type="text" placeholder="Notice Board Title" id="noticeboardtitle"   style="width:260px;")
+                                                                                        table.tblclass(align="center")    
+                                                                                            tr.tblclass(align="center")         
+                                                                                                td.tblclass(align="center")
+                                                                                                    label Notice Board Description 
+                                                                                                    br
+                                                                                                    textarea(type="text" id="noticeboarddescription"  style="width: 260px; height: 140px;" )  
+                                                                                        table(align="center")
+                                                                                            tr 
+                                                                                                td 
+                                                                                                    button(onclick="creatnewnoticeboard();") Save
+                                                                                                    //-   <img src="/static/image/save-data.png" style="height:35px; width:30px;"/>
+
+                                                                                        div#dialogboxclose
+                                                                        </dialog>
+                                                    div.model12#enquiryinformation
+                                                        table(align="center") 
+                                                                tr.tblflex  
+                                                                    td
+                                                                        <dialog id="enquirydialog" class="digclass" style="overflow: auto;  width: 600px; height: 500px;" >
+                                                                            table(align="center")
+                                                                                tr(align="center")  
+                                                                                    td(style="text-align:right;" align="center")  
+                                                                                        h1(style="text-align:center;" align="center") Enquiry 
+                                                                                    td(class="aligreight")     
+                                                                                        button(onclick="closeenquirytb();" ) X
+                                                                            table.tblclass(align="center") 
+                                                                                tr.tblflex  
+                                                                                    td.tblflex(align="center")
+                                                                                        div#showenquiryinfo
+                                                                            div#dialogboxclose
+                                                                        </dialog>                           
+                                                    div.model12#noticeinformation 
+                                                        table(align="center") 
+                                                            tr.tblflex 
+                                                                td
+                                                                    <dialog id="allnoticeinfo" class="digclass" style='width: 800px; height: 400px; overflow: auto;	' >
+                                                                        table(align="center") 
+                                                                            tr    
+                                                                                td(class="fr1" style="vertical-align: top;") 
+                                                                                td.tblclass(align="center" style="vertical-align: top;")     
+                                                                                    button(onclick="closeinformationdialog();" ) X
+                                                                            tr.tblflex
+                                                                                div#shownoticein 
+                                                                    
+                                                                    <dialog>      
+                                                    div.model12#fileuploadn
+                                                        table(align="center") 
+                                                                tr.tblflex(align="center") 
+                                                                    td.tblflex(align="center")
+                                                                        <dialog id="favdialogfile" class="digclass" style="border-radius: 15px; width: 320px; height: 300px;" >
+                                                                            table 
+                                                                                    tr 
+                                                                                        td(class='tblbackcolor')
+                                                                                            table(align="center") 
+                                                                                                tr(align="center")    
+                                                                                                    td(class="fr1" style="vertical-align: top;") 
+                                                                                                    td.tblclass(align="center" style="vertical-align: top;")     
+                                                                                                        button(onclick="closedialoguploadfile();" ) X
+                                                                                                    td(align="center") 
+                                                                                                        input(id='noticeid' type="hiddenbox" style='display: none;')      
+                                                                                            table.tblclass(align="center") 
+                                                                                                tr(align="center")  
+                                                                                                    td(align="center" )
+                                                                                                        input(type="file" id="fileupload" placeholder="choose file")  
+                                                                                                tr(align="center")
+                                                                                            table(align="center") 
+                                                                                                tr(align="center")
+                                                                                                    td(align="center") 
+                                                                                                        label FilePurposen
+                                                                                                        br 
+                                                                                                        textarea(id="filepurposen" placeholder="logtext" style="width: 250px; height: 130px;")      
+                                                                                                        br
+                                                                                                        button(onclick="saveuploadefile();") Add File
+                                                                        <dialog>
+                                    
+                                                    div.model12#newnotice
+                                                            table(align="center") 
+                                                                    tr.tblflex 
+                                                                        td
+                                                                            <dialog id="noticedialog" class="digclass" style="border-radius: 15px; width: 430px; height: 480px; ">
+                                                                                table 
+                                                                                    tr 
+                                                                                        td(class='tblbackcolor')
+                                                                                            table(align="center")
+                                                                                                tr(align="center")  
+                                                                                                    td(style="text-align:right;" align="center")  
+                                                                                                        h1(style="text-align:center;" align="center") Notice 
+                                                                                                    td(class="aligreight")     
+                                                                                                        button(onclick="closenewnotice();" ) X
+                                                                                                
+                                                                                            
+                                                                                            table.tblclass(align="center") 
+                                                                                                tr.tblclass  
+                                                                                                    td.tblclass(align="center")
+                                                                                                        label Notice Title 
+                                                                                                        br  
+                                                                                                        input(type="text" placeholder="Notice Board Title" id="noticetitle"   style="width:260px;")
+                                                                                            table.tblclass(align="center")    
+                                                                                                tr(align="center")         
+                                                                                                    td.tblclass(align="center")
+                                                                                                        label Notice Text 
+                                                                                                        br
+                                                                                                        textarea(type="text" id="noticedescription"  style="width: 260px; height: 120px;" )  
+                                                                                            table(align="center")    
+                                                                                                tr
+                                                                                                    td.tblclass
+                                                                                                        label From 
+                                                                                                        br
+                                                                                                        input(type="datetime-local" id="noticestartdate"  required style="width:175px;")
+                                                                                                    td.tblclass
+                                                                                                        label To 
+                                                                                                        br
+                                                                                                        input(type="datetime-local" id="noticenddate"  required style="width:175px;")
+                                                                                            table(align="center")
+                                                                                                tr(align="center" id='noticesave') 
+                                                                                                    td 
+                                                                                                        button(onclick="creatnewnotice();") Save
+                                                                                            div#dialogboxclose
+                                                                            </dialog>      
+                                                    div.model12#updatenotice
+                                                            table(align="center") 
+                                                                    tr.tblflex 
+                                                                        td
+                                                                            <dialog id="updatenoticedialog"  class="digclass" style="border-radius: 15px; width: 430px; height: 450px;">
+                                                                                table 
+                                                                                    tr 
+                                                                                        td(class='tblbackcolor')
+                                                                                            table(align="center")
+                                                                                                tr(align="center")  
+                                                                                                    td(style="text-align:right;" align="center")  
+                                                                                                        h1(style="text-align:center;" align="center") Update Notice 
+                                                                                                    td(class="aligreight")     
+                                                                                                        button(onclick="closeupdatenoticedialog();"   ) X
+                                                                                                
+                                                                                            
+                                                                                            table.tblclass(align="center") 
+                                                                                                tr.tblclass  
+                                                                                                    td.tblclass(align="center")
+                                                                                                        label Notice Title 
+                                                                                                        br  
+                                                                                                        input(type="text" placeholder="Notice Board Title" id="noticetitle1"   style="width:260px;")
+                                                                                                    td
+                                                                                                        input(type="text" id='noticeidn' style='display: none;') 
+                                                                                            table.tblclass(align="center")    
+                                                                                                tr(align="center")         
+                                                                                                    td.tblclass(align="center")
+                                                                                                        label Notice Text 
+                                                                                                        br
+                                                                                                        textarea(type="text" id="noticedescription1"  style="width: 260px; height: 120px;" )  
+                                                                                            table(align="center")    
+                                                                                                tr
+                                                                                                    td.tblclass
+                                                                                                        label From 
+                                                                                                        br
+                                                                                                        input(type="datetime-local" id="noticestartdate1"  required style="width:175px;")
+                                                                                                    td.tblclass
+                                                                                                        label To 
+                                                                                                        br
+                                                                                                        input(type="datetime-local" id="noticenddate1"  required style="width:175px;")
+                                                                                            table(align="center")
+                                                                                                tr(align="center")    
+                                                                                                    td 
+                                                                                                        button(onclick="updatenoticeinformation();" ) Update     
+                                                                                                        //-   <img src="/static/image/save-data.png" style="height:35px; width:30px;"/>
+
+                                                                                            div#dialogboxclose
+                                                                            </dialog>      
+                                            
+                                                    table(align="center" class='snb' width="100%")   
+                                                        tr.tblflex 
+                                                            td(align="center")               
+                                                                table(align="center") 
+                                                                    tr.tblflex(align="center" style="display:flex; flex-flow:row wrap;")
+                                                                        div
+                                                                            td.tblflex(align="center" id='shownoticeboard' style='width: 100%; height: 100%;')
+                                                                                        
+              
+            
+                    
+                                                
+                              
+                                        
+                                                         
+    block script  
+    script(src="/static/js/noticeboard.js")
+    script(type="text/javascript" src='/static/js/login.js') 
+    script(type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    
+
+                                            

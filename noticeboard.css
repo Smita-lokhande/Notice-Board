@@ -1,0 +1,77 @@
+.tblflex{
+	display: flex; 
+	flex-flow:row wrap;
+	justify-content: center;
+	width: 100%;}
+.qrc{width: 200px;}
+.orgn{
+	font-weight: bold;
+	font-size: 18px;}
+.showQRc{
+	align-items: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;}
+.butanimg{
+	background-image: radial-gradient(#f0f2f2,#f3f5f6) !important; 
+   box-shadow: none !important;}
+.mainbutton{
+	background-image: radial-gradient(#f0f2f2,#f3f5f6) !important; 
+	box-shadow: none;}
+.mainbutton:hover {box-shadow:none }
+input[type=datetime-local], input[type=time], input[type=number]{
+	padding: 4px 4px;
+	margin: 4px 0;
+	display: inline-block;
+	border-radius: 5px;
+	box-shadow: 5px 4px 3px #c1c1c1;
+	border: 1px solid #e1e1e1;
+	box-sizing: border-box;
+	text-decoration: none;
+	font-family: Verdana, Geneva, sans-serif;
+}
+.newnoticc{
+	width: 600px;
+    height: 500px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);}
+@media only screen and (max-width: 600px) {
+    .ntable {
+        width: 90%;
+    }
+    .noticebk1 {
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 601px) {
+    .ntable {
+        width: 750px;
+    }
+    .noticebk1 {
+        width: 15%;
+    }
+}	  
+.notice-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;}
+.notice-item {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+    width: calc(33.33% - 20px); /* Adjust based on the number of items you want in a row */
+    max-width: 300px; /* Limit maximum width of items */}
+.notice-title {
+    font-weight: bold;
+	color: white;}
+.notice-actions {margin-top: 10px;}
+.enquiryButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;}
